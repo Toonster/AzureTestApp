@@ -18,7 +18,7 @@ resources:
       type: git
       ref: refs/heads/main
 stages:
-- stage: Build, Test and Publish
+- stage: Build_Test_Publish
   jobs:
     - job: Job_1
       displayName: CI 
