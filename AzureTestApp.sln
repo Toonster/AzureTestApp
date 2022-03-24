@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestApp", "AzureTestApp\AzureTestApp.csproj", "{BAF04395-827E-422F-8CE0-1618B7E38FCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3CDEB42D-A375-4E2E-8680-243547E18785}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureTestApp.Tests", "AzureTestApp.Tests\AzureTestApp.Tests.csproj", "{3CDEB42D-A375-4E2E-8680-243547E18785}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
