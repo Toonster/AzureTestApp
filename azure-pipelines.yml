@@ -3,10 +3,10 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 variables:
+- name: BuildConfiguration
+  value: 'Release'
 - name: BuildParameters.RestoreBuildProjects
   value: '**/*.csproj'
-- name: IsMain
-  value: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 trigger:
 - main
 pr:
@@ -50,7 +50,12 @@ stages:
             publishWebProjects: true
             zipAfterPublish: true
             arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
-
-        
+        - task: PublishBuildArtifacts@1
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+          displayName: Publish artifact
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'testApp'
+            publishLocation: 'Container'
 
 
