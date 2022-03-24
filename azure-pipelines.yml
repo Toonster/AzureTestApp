@@ -35,7 +35,6 @@ jobs:
         displayName: Test
         inputs:
           command: 'test'
-          projects: '$(BuildParameters.RestoreBuildProjects)'
           arguments: '--configuration $(BuildConfiguration)'
 
 
