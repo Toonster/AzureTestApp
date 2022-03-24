@@ -3,9 +3,13 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 variables:
+- name: BuildConfiguration
+  value: 'Release'
 - name: BuildParameters.RestoreBuildProjects
   value: '**/*.csproj'
 trigger:
+- main
+pr:
 - main
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
@@ -13,27 +17,45 @@ resources:
     - repository: self
       type: git
       ref: refs/heads/main
-jobs:
-  - job: Job_1
-    displayName: CI 
-    pool:
-      vmImage: windows-latest
-    steps:
-      - checkout: self
-        clean: true
-      - task: UseDotNet@2
-        displayName: Use .NET Core sdk 6.0.x
-        inputs:
-          version: 6.0.x
-          includePreviewVersions: true
-      - task: DotNetCoreCLI@2
-        displayName: Build
-        inputs:
-          projects: $(BuildParameters.RestoreBuildProjects)
-          arguments: --configuration $(BuildConfiguration)
-      - task: DotNetCoreCLI@2
-        displayName: Test
-        inputs:
-          command: 'test'
+stages:
+- stage: Build_Test_Publish
+  jobs:
+    - job: Job_1
+      displayName: CI 
+      pool:
+        vmImage: windows-latest
+      steps:
+        - checkout: self
+          clean: true
+        - task: UseDotNet@2
+          displayName: Use .NET Core sdk 6.0.x
+          inputs:
+            version: 6.0.x
+            includePreviewVersions: true
+        - task: DotNetCoreCLI@2
+          displayName: Build
+          inputs:
+            command: build 
+            projects: $(BuildParameters.RestoreBuildProjects)
+            arguments: --configuration $(BuildConfiguration)
+        - task: DotNetCoreCLI@2
+          displayName: Test
+          inputs:
+            command: test
+        - task: DotNetCoreCLI@2
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+          displayName: Publish
+          inputs:
+            command: publish
+            publishWebProjects: true
+            zipAfterPublish: true
+            arguments: --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)
+        - task: PublishBuildArtifacts@1
+          condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+          displayName: Publish artifact
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'testApp'
+            publishLocation: 'Container'
 
 
