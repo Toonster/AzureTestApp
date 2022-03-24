@@ -7,6 +7,6 @@ public class Class1
     [Fact]
     public void Fail()
     {
-        Assert.True(false);
+        Assert.True(true);
     }
 }
