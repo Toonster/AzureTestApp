@@ -31,4 +31,10 @@ jobs:
         inputs:
           projects: $(BuildParameters.RestoreBuildProjects)
           arguments: --configuration $(BuildConfiguration)
+      - task: DotNetCoreCLI@2
+        displayName: Test
+        inputs:
+          command: 'test'
+          arguments: '--configuration $(BuildConfiguration)'
+
 
