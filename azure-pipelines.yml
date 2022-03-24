@@ -35,6 +35,5 @@ jobs:
         displayName: Test
         inputs:
           command: 'test'
-          arguments: '--configuration $(BuildConfiguration)'
 
 
